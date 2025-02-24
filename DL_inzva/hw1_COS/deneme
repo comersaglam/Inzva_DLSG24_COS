@@ -1,0 +1,19 @@
+import torch
+import torch.nn as nn
+from utils.model import NeuralNet
+from utils.data_utils import *
+from utils.viz_utils import *
+from training import train_model
+from testing import test_model
+
+
+input_size = 3*32*32  # CIFAR-10 images are 3-channel RGB images with 32x32 pixels (3*32*32)
+num_classes = 10  # CIFAR-10 has 10 classes
+epochs = 20
+batch_size = 64
+learning_rate = 0.001
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+train_set, test_set = get_train_and_test_set()
+val_indices, test_indices = split_testset(test_set, test_size=0.5)
+test_loader = get_testloader(test_set, test_indices, batch_size)
+test_model(device, test_loader)
